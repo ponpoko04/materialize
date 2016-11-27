@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+  </head>
+
+  <body>
+    <div class="progress">
+      <div class="indeterminate"></div>
+    </div>
+
+    <div class="container">
+      <div>
+        <h1>ToDo Application</h1>
+      </div>
+
+      <form action="#" class="row">
+        <div class="input-field col s12">
+          <input id="todoInput" type="text" class="validate" onkeyup="index.pushTodo(arguments[0], this.value);return false;" />
+	  <label for="todoInput">Enter New ToDo</label>
+	</div>
+        <div id="list" class="col s12">
+          <div>
+           <p>
+             <input type="checkbox" id="chk1" class="filled-in" />
+             <label for="chk1">One</label>
+           </p>
+         </div>
+         <div>
+           <p>
+             <input type="checkbox" id="chk2" class="filled-in" checked="checked" />
+             <label for="chk2">Two</label>
+           </p>
+         </div>
+         <div>
+           <p>
+             <input type="checkbox" id="chk3" class="filled-in" />
+             <label for="chk3">Three</label>
+           </p>
+         </div>
+       </div>
+      </form>
+    </div>
+
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
