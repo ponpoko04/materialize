@@ -11,9 +11,11 @@ var index = function(){
   function refreshTodoList(){
     var todoHtml = '';
     for(var i = 0; i < todos.length; i++){
-      todoHtml += '<div><p>'
-      todoHtml += '<input type="checkbox" id="' + todos[i].id + '" class="filled-in" />'
-      todoHtml += '<label for="' + todos[i].id + '">' + todos[i].name + '</label></p></div>'
+      todoHtml += '<div><p>';
+      todoHtml += '<input type="checkbox" id="' + todos[i].id + '" class="filled-in" ';
+      todoHtml += 'onchange="index.changeTodo(' + todos[i].id + ');" ';
+      todoHtml += (todos[i].checked ? 'checked="checked" />' : '/>');
+      todoHtml += '<label for="' + todos[i].id + '">' + todos[i].name + '</label></p></div>';
     }
     $('#list').html(todoHtml);
     return;
@@ -33,6 +35,10 @@ var index = function(){
         }
       }
     },
+    popAll: function(){
+      todos = [];
+      refreshTodoList();
+    },
     pushTodo: function(e, name){
       if (e.key !== 'Enter') {
         return;
@@ -40,11 +46,17 @@ var index = function(){
       todos.push({id:getUniqueStr(), name:name});
       refreshTodoList();
       clearTodoInput();
-      return;
+    },
+    changeTodo: function(id){
+      todos = todos.map(function(i){
+        if (i.id === id) {
+          i.changed = $('#' + id).prop('checked');
+        }
+        return i;
+      });
     },
     showTodoList: function(){
       refreshTodoList();
-      return;
     },
     getTodoList: function(){
       return todos;
@@ -64,6 +76,12 @@ $(function(){
 });
 $(window).on('beforeunload', function(e) {
   var savingTodos = index.getTodoList();
+  var $list = $('#list');
+  savingTodos = savingTodos.map(function(i){
+    var checked = $list.find('#' + i.id).prop('checked');
+    i.checked = checked;
+    return i;
+  });
   try {
     localStorage.setItem('todos', JSON.stringify(savingTodos));
   } catch (e) {
