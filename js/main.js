@@ -1,5 +1,6 @@
 var index = function(){
-  var todos = [];
+  //localStorageにあればそちらのデータで初期化
+  var todos = localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')) : [];
 
   function getUniqueStr(myStrong){
     var strong = 1000;
@@ -28,18 +29,15 @@ var index = function(){
       for(var i; i < todos.length; i++){
         if (todos[i].id === id) {
           todos.splice(i+1,1);
-	  break;
-	}
+          break;
+        }
       }
-      console.log(todos);
     },
     pushTodo: function(e, name){
       if (e.key !== 'Enter') {
-        console.log(e.key);
         return;
       }
       todos.push({id:getUniqueStr(), name:name});
-      console.log(todos);
       refreshTodoList();
       clearTodoInput();
       return;
@@ -47,6 +45,9 @@ var index = function(){
     showTodoList: function(){
       refreshTodoList();
       return;
+    },
+    getTodoList: function(){
+      return todos;
     }
   };
 }();
@@ -60,4 +61,12 @@ $(function(){
       }
       return true;
     });
+});
+$(window).on('beforeunload', function(e) {
+  var savingTodos = index.getTodoList();
+  try {
+    localStorage.setItem('todos', JSON.stringify(savingTodos));
+  } catch (e) {
+    return 'ToDoデータの一時保存に失敗しました。ローカルストレージの権限について確認してください。';
+  }
 });
