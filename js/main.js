@@ -44,6 +44,7 @@ var index = function(){
         return;
       }
       todos.push({id:getUniqueStr(), name:name});
+      this.saveTodos();
       refreshTodoList();
       clearTodoInput();
     },
