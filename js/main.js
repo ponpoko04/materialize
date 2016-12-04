@@ -13,7 +13,7 @@ var index = function(){
     for(var i = 0; i < todos.length; i++){
       todoHtml += '<div><p>';
       todoHtml += '<input type="checkbox" id="' + todos[i].id + '" class="filled-in" ';
-      todoHtml += 'onchange="index.changeTodo(' + todos[i].id + ');" ';
+      todoHtml += 'onchange="index.changeTodo(\'' + todos[i].id + '\');" ';
       todoHtml += (todos[i].checked ? 'checked="checked" />' : '/>');
       todoHtml += '<label for="' + todos[i].id + '">' + todos[i].name + '</label></p></div>';
     }
@@ -50,16 +50,24 @@ var index = function(){
     changeTodo: function(id){
       todos = todos.map(function(i){
         if (i.id === id) {
-          i.changed = $('#' + id).prop('checked');
+          i.checked = $('#' + id).prop('checked');
         }
         return i;
       });
+      this.saveTodos();
     },
     showTodoList: function(){
       refreshTodoList();
     },
     getTodoList: function(){
       return todos;
+    },
+    saveTodos: function(){
+      try {
+        localStorage.setItem('todos', JSON.stringify(todos));
+      } catch (e) {
+        return 'Exception Occured. Could not save todos.';
+      }
     }
   };
 }();
@@ -75,16 +83,5 @@ $(function(){
     });
 });
 $(window).on('beforeunload', function(e) {
-  var savingTodos = index.getTodoList();
-  var $list = $('#list');
-  savingTodos = savingTodos.map(function(i){
-    var checked = $list.find('#' + i.id).prop('checked');
-    i.checked = checked;
-    return i;
-  });
-  try {
-    localStorage.setItem('todos', JSON.stringify(savingTodos));
-  } catch (e) {
-    return 'ToDoデータの一時保存に失敗しました。ローカルストレージの権限について確認してください。';
-  }
+  return index.saveTodos();
 });
