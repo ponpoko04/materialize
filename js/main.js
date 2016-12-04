@@ -34,9 +34,11 @@ var index = function(){
           break;
         }
       }
+      this.saveTodos();
     },
     popAll: function(){
       todos = [];
+      this.saveTodos();
       refreshTodoList();
     },
     pushTodo: function(e, name){
