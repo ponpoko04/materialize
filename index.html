@@ -1,42 +1,51 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
-    <!--Import Google Icon Font-->
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+  <!--Import Google Icon Font-->
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
 
-    <meta charset="utf-8"/>
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-
-    <title>Simple ToDo</title>
+  <meta charset="utf-8" />
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Simple Tasks</title>
 </head>
 
 <body>
-    <div class="progress">
-      <div class="indeterminate"></div>
+  <div class="progress">
+    <div class="indeterminate"></div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+      <h3>Simple Tasks</h3>
+      <a class="waves-effect waves-light btn" onclick="index.popAll();return false;">All Clear</a>
     </div>
 
-    <div class="container">
-      <div>
-        <h3>ToDo Application</h3>
-        <a class="waves-effect waves-light btn" onclick="index.popAll();return false;">All Clear</a>
-      </div>
-
+    <div class="section">
       <form action="#" class="row">
         <div class="input-field col s12">
+          <select class="task-group">
+            <option value="0" selected>Group 1</option>
+            <option value="1">Group 2</option>
+            <option value="2">Group 3</option>
+          </select>
+          <label>Choose task group</label>
+        </div>
+        <div class="input-field col s12">
           <input id="todoInput" type="text" class="validate" onkeyup="index.pushTodo(arguments[0], this.value);return false;" />
-          <label for="todoInput">Enter New ToDo</label>
+          <label for="todoInput">Enter new task</label>
         </div>
         <div id="list" class="col s12">
         </div>
       </form>
     </div>
+  </div>
 
-    <!--Import jQuery before materialize.js-->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script type="text/javascript" src="js/materialize.min.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
+  <!--Import jQuery before materialize.js-->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="js/materialize.min.js"></script>
+  <script type="text/javascript" src="js/main.js?20170108"></script>
 </body>
 </html>
