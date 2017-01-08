@@ -20,13 +20,18 @@ var index = function () {
     var todoHtml = '';
     var selectedGroup = $('select.task-group').val();
     for (var i = 0; i < todos[selectedGroup].length; i++) {
-      todoHtml += '<div><p>';
+      todoHtml += '<div><p class="task">';
       todoHtml += '<input type="checkbox" id="' + todos[selectedGroup][i].id + '" class="filled-in" ';
       todoHtml += 'onchange="index.changeTodo(\'' + todos[selectedGroup][i].id + '\');" ';
       todoHtml += (todos[selectedGroup][i].checked ? 'checked="checked" />' : '/>');
       todoHtml += '<label for="' + todos[selectedGroup][i].id + '">' + todos[selectedGroup][i].name + '</label></p></div>';
     }
     $('#list').html(todoHtml);
+    $('#list p.task').addEventLongTap().off('longTaped').on('longTaped', function(e){
+      popTodo($(this).find('input[type="checkbox"]').attr('id'));
+      saveTodos();
+      refreshTodoList();
+    });
     return;
   }
 
@@ -35,21 +40,29 @@ var index = function () {
     return;
   }
 
-  return {
-    popTodo: function (id) {
-      var selectedGroup = getSelectedTaskGroup();
-      for (var i; i < todos[selectedGroup].length; i++) {
-        if (todos[selectedGroup][i].id === id) {
-          todos[selectedGroup].splice(i + 1, 1);
-          break;
-        }
+  function popTodo(id) {
+    var selectedGroup = getSelectedTaskGroup();
+    for (var i = 0; i < todos[selectedGroup].length; i++) {
+      if (todos[selectedGroup][i].id === id) {
+        todos[selectedGroup].splice(i, 1);
+        break;
       }
-      this.saveTodos();
-    },
+    }
+  }
+
+  function saveTodos() {
+    try {
+      localStorage.setItem('todos', JSON.stringify(todos));
+    } catch (e) {
+      return 'Exception Occured. Could not save todos.';
+    }
+  }
+
+  return {
     popAll: function () {
       var selectedGroup = getSelectedTaskGroup();
       todos[selectedGroup] = [];
-      this.saveTodos();
+      saveTodos();
       refreshTodoList();
     },
     pushTodo: function (e, name) {
@@ -58,7 +71,7 @@ var index = function () {
       }
       var selectedGroup = getSelectedTaskGroup();
       todos[selectedGroup].push({ id: getUniqueStr(), name: name });
-      this.saveTodos();
+      saveTodos();
       refreshTodoList();
       clearTodoInput();
     },
@@ -70,7 +83,7 @@ var index = function () {
         }
         return i;
       });
-      this.saveTodos();
+      saveTodos();
     },
     showTodoList: function () {
       refreshTodoList();
@@ -78,13 +91,6 @@ var index = function () {
     getTodoList: function () {
       var selectedGroup = getSelectedTaskGroup();
       return todos[selectedGroup];
-    },
-    saveTodos: function () {
-      try {
-        localStorage.setItem('todos', JSON.stringify(todos));
-      } catch (e) {
-        return 'Exception Occured. Could not save todos.';
-      }
     }
   };
 }();
