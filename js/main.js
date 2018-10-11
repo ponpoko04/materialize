@@ -1,9 +1,14 @@
 var index = function () {
   //localStorageにあればそちらのデータで初期化
-  var todos = localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')) : [[], [], []];
+  var todos = localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')) : [[], [], [], [], []];
   if (!Array.isArray(todos[0])) {
     //2次元配列でなかった旧バージョン対応のため、2次元配列化します
-    todos = [todos, [], []];
+    todos = [todos, [], [], [], []];
+  }
+  if (todos.length === 3) {
+    //タスクグループを3→5に増加する改修をしたため、LocalStorageから配列3のものが取得できた場合は5つに増やします
+    todos.push([]);
+    todos.push([]);
   }
 
   function getUniqueStr(myStrong) {
